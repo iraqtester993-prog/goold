@@ -1,34 +1,48 @@
 <template>
-  <router-view />
+  <div id="app" :data-theme="theme">
+    <AppHeader v-if="!hideLayout" />
+    <main class="main-content" :class="{ 'no-header': hideLayout }">
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
+    <BottomNav v-if="!hideLayout" />
+    <CartDrawer />
+  </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { useTheme } from './composables/useTheme'
+import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useThemeStore } from './stores/themeStore'
+import AppHeader from './components/layout/AppHeader.vue'
+import BottomNav from './components/layout/BottomNav.vue'
+import CartDrawer from './components/cart/CartDrawer.vue'
 
-const { applyTheme } = useTheme()
+const route = useRoute()
+const themeStore = useThemeStore()
+
+const theme = computed(() => themeStore.currentTheme)
+const hideLayout = computed(() =>
+  ['splash', 'welcome', 'login', 'register'].includes(route.name)
+)
 
 onMounted(() => {
-  applyTheme()
+  themeStore.initTheme()
 })
 </script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.main-content {
+  padding-top: 56px;
+  padding-bottom: 72px;
+  min-height: 100vh;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-  background: #0a0f1d;
-  color: #ffffff;
-  direction: rtl;
-}
-
-body.light {
-  background: #f5f0e6;
-  color: #1a1a2e;
+.main-content.no-header {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 </style>

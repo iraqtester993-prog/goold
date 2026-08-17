@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   base: '/goold/',
@@ -8,13 +9,13 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['app-logo.png'],
+      includeAssets: ['favicon.svg', 'icons.svg'],
       manifest: {
-        name: 'السوق الذهبي',
-        short_name: 'السوق الذهبي',
-        description: 'متجر السوق الذهبي',
-        theme_color: '#0a0f1d',
-        background_color: '#0a0f1d',
+        name: 'العصر الذهبي - أجهزة إلكترونية',
+        short_name: 'العصر الذهبي',
+        description: 'متجر الأجهزة الإلكترونية مع خدمة التقسيط',
+        theme_color: '#0a1628',
+        background_color: '#0a1628',
         display: 'standalone',
         orientation: 'portrait',
         dir: 'rtl',
@@ -23,17 +24,47 @@ export default defineConfig({
         scope: '/goold/',
         icons: [
           {
-            src: 'app-logo.png',
-            sizes: '192x192',
-            type: 'image/png'
+            src: 'icons.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
+          }
+        ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 }
+            }
           },
           {
-            src: 'app-logo.png',
-            sizes: '512x512',
-            type: 'image/png'
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 }
+            }
           }
         ]
       }
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
 })

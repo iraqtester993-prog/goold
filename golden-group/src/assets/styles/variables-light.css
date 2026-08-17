@@ -1,0 +1,27 @@
+html[data-theme="light"] {
+  --bg-primary: #f5f5f7;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f8fa;
+  --bg-input: #f0f0f3;
+  --bg-overlay: rgba(255, 255, 255, 0.92);
+
+  --color-gold: #c9982e;
+  --color-gold-light: #d4a843;
+  --color-gold-dark: #a87d1f;
+  --color-gold-hover: #d4a843;
+  --color-gold-gradient: linear-gradient(135deg, #c9982e, #d4a843);
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #666677;
+  --text-muted: #999aaa;
+  --text-gold: #a87d1f;
+
+  --border-color: rgba(168, 125, 31, 0.15);
+  --border-light: rgba(0, 0, 0, 0.08);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-gold: 0 4px 20px rgba(201, 152, 46, 0.12);
+}
